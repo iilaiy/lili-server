@@ -30,7 +30,7 @@ exports.buildUser = (name, mail, password) => {
 
     // 插入数据对象
     let data = {
-        user_id: Number(intformat(flakeIdGen.next())),
+        user_id: intformat(flakeIdGen.next()),
         name: name,
         email: mail,
         password: bcryptPassword,

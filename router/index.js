@@ -8,6 +8,8 @@ const signin = require('../server/signin')
 const search = require('../server/search')
 // 好友服务
 const friend = require('../server/friend')
+// 公共服务
+const common = require('../server/common')
 
 module.exports = (app) => {
     app.get('/test', (req, res) => res.send('这里是测试页面'))
@@ -33,9 +35,9 @@ module.exports = (app) => {
         search.searchUser(req, res)
     })
 
-    // 判断是否为好友
-    app.post('/friend/verify', (req, res) => {
-        friend.isFriend(req, res)
+    // 判断是否为好友/在群内
+    app.post('/common/verify', (req, res) => {
+        common.isFGVerify(req, res)
     })
 
     // 搜索群
