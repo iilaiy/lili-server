@@ -1,4 +1,28 @@
-### LILI前后端接口文档
+## LILISHIGUANG
+
+### 服务启动
+
+```
+# 启动 mysql
+# 新建 lilishiguang 数据库
+# 导入 /database/lilishiguang.sql 文件
+
+# 数据库配置文件 /config/db.js
+{
+    host: '127.0.0.1',			// 本机ip
+    user: 'root',   			// mysql账号名
+    password: 'root0315',  		// 密码
+    database: 'lilishiguang', 	// 数据库名
+    port: '3306' 				// 端口号
+}
+
+# 后端服务启动
+npm start
+```
+
+
+
+### 前后端接口文档
 
 前置URL: http://192.168.1.3:3000
 
