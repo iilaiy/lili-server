@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50737
 File Encoding         : 65001
 
-Date: 2023-07-29 23:25:44
+Date: 2023-07-30 08:01:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,37 +22,58 @@ DROP TABLE IF EXISTS `friend`;
 CREATE TABLE `friend` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `markname` varchar(255) DEFAULT NULL COMMENT '备注',
-  `user_id` bigint(20) NOT NULL COMMENT '用户id',
-  `friend_id` bigint(20) NOT NULL COMMENT '好友id',
+  `user_id` varchar(255) NOT NULL COMMENT '用户id',
+  `friend_id` varchar(255) NOT NULL COMMENT '好友id',
   `create_time` date NOT NULL COMMENT '生成时间',
   `status` int(11) NOT NULL COMMENT '状态（0：已为好友，1：申请中，2：未同意，3：已删除）',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of friend
 -- ----------------------------
-INSERT INTO `friend` VALUES ('1', '小黎', '7090285809957339000', '7090803498295493000', '2023-07-29', '0');
+INSERT INTO `friend` VALUES ('2', '小屁孩', '7091176191624740864', '7091176498379358208', '2023-07-30', '0');
+INSERT INTO `friend` VALUES ('3', 'pp', '7091176498379358208', '7091176191624740864', '2023-07-30', '0');
 
 -- ----------------------------
--- Table structure for groupmember
+-- Table structure for friendmessage
 -- ----------------------------
-DROP TABLE IF EXISTS `groupmember`;
-CREATE TABLE `groupmember` (
+DROP TABLE IF EXISTS `friendmessage`;
+CREATE TABLE `friendmessage` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `group_id` bigint(20) NOT NULL COMMENT '群id',
-  `user_id` bigint(20) NOT NULL COMMENT '用户id',
-  `group_name` varchar(255) NOT NULL COMMENT '群内名',
-  `tip` int(11) NOT NULL DEFAULT '0' COMMENT '未读消息数',
-  `shield` int(11) NOT NULL DEFAULT '0' COMMENT '是否屏蔽群消息(0:不屏蔽，1:屏蔽)',
-  `status` int(11) NOT NULL DEFAULT '0' COMMENT '状态（0：正常，1：已退出）',
-  `add_time` date NOT NULL COMMENT '加入时间',
+  `user_id` varchar(255) NOT NULL COMMENT '发送者id',
+  `friend_id` varchar(255) NOT NULL COMMENT '接收者id',
+  `content` varchar(255) NOT NULL COMMENT '发送内容',
+  `types` int(11) NOT NULL COMMENT '内容类型',
+  `time` date NOT NULL COMMENT '发送时间',
+  `status` int(11) NOT NULL COMMENT '状态（0：已读，1：未读）',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of groupmember
+-- Records of friendmessage
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for groupmembers
+-- ----------------------------
+DROP TABLE IF EXISTS `groupmembers`;
+CREATE TABLE `groupmembers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(255) NOT NULL COMMENT '用户id',
+  `group_id` varchar(255) NOT NULL COMMENT '群id',
+  `group_name` varchar(255) NOT NULL COMMENT '群内名',
+  `tip` int(11) NOT NULL DEFAULT '0' COMMENT '未读消息数',
+  `shield` int(11) NOT NULL DEFAULT '0' COMMENT '是否屏蔽消息（0：不屏蔽，1：屏蔽）',
+  `status` int(11) NOT NULL DEFAULT '0' COMMENT '状态（0：正常，1：已退出）',
+  `add_time` date NOT NULL COMMENT '加入时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of groupmembers
+-- ----------------------------
+INSERT INTO `groupmembers` VALUES ('2', '7091176191624740864', '7091176191624740999', 'it交流群', '0', '0', '0', '2023-07-30');
 
 -- ----------------------------
 -- Table structure for groupmessage
@@ -60,8 +81,8 @@ CREATE TABLE `groupmember` (
 DROP TABLE IF EXISTS `groupmessage`;
 CREATE TABLE `groupmessage` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `group_id` bigint(20) NOT NULL COMMENT '群id',
-  `user_id` bigint(20) NOT NULL COMMENT '发送者id',
+  `group_id` varchar(255) NOT NULL COMMENT '群id',
+  `user_id` varchar(255) NOT NULL COMMENT '发送者id',
   `content` varchar(255) NOT NULL COMMENT '发送内容',
   `types` int(11) NOT NULL COMMENT '内容类型',
   `sending_time` date NOT NULL COMMENT '发送时间',
@@ -77,8 +98,8 @@ CREATE TABLE `groupmessage` (
 -- ----------------------------
 DROP TABLE IF EXISTS `groups`;
 CREATE TABLE `groups` (
-  `group_id` bigint(20) NOT NULL COMMENT '群id',
-  `user_id` bigint(20) NOT NULL COMMENT '群创建者id',
+  `group_id` varchar(255) NOT NULL COMMENT '群id',
+  `user_id` varchar(255) NOT NULL COMMENT '群创建者id',
   `name` varchar(255) NOT NULL COMMENT '群名称',
   `imgurl` varchar(255) NOT NULL DEFAULT 'group_default.png' COMMENT '群封面链接',
   `notice` varchar(255) DEFAULT NULL COMMENT '群公告',
@@ -89,33 +110,14 @@ CREATE TABLE `groups` (
 -- ----------------------------
 -- Records of groups
 -- ----------------------------
-INSERT INTO `groups` VALUES ('7090285809957339000', '7090285809957339000', '不知道', 'group_default.png', '123', '2023-07-29');
-
--- ----------------------------
--- Table structure for message
--- ----------------------------
-DROP TABLE IF EXISTS `message`;
-CREATE TABLE `message` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) NOT NULL COMMENT '发送者id',
-  `friend_id` bigint(20) NOT NULL COMMENT '接收者id',
-  `content` varchar(255) NOT NULL COMMENT '发送内容',
-  `types` int(11) NOT NULL COMMENT '内容类型',
-  `time` date NOT NULL COMMENT '发送时间',
-  `status` int(11) NOT NULL COMMENT '状态（0：已读，1：未读）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of message
--- ----------------------------
+INSERT INTO `groups` VALUES ('7091176191624740999', '7091176191624740864', 'it交流群', 'group_default.png', '还没公告，看什么看', '2023-07-30');
 
 -- ----------------------------
 -- Table structure for users
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
-  `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `user_id` varchar(255) NOT NULL COMMENT '用户id',
   `name` varchar(255) NOT NULL COMMENT '用户名',
   `password` varchar(255) NOT NULL COMMENT '密码',
   `email` varchar(255) NOT NULL COMMENT '邮箱',
@@ -132,7 +134,6 @@ CREATE TABLE `users` (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('7090285809957339000', '佳佳', '$2a$10$TJlfseYnvcN9roFsdi.pLOAaSlCtxtriK.PXxF/JMOzd5ItlO7faS', '226894038@qq.com', 'asexual', null, null, null, 'avatar_default.png', '2023-07-27', '0');
-INSERT INTO `users` VALUES ('7090802247277216000', '黎黎', '$2a$10$9ajqP0GX2fLImQoW37cckefP38L71tEfTFxHWTpvn7utQClLVgeDO', '1469854373@qq.com', 'asexual', null, null, null, 'avatar_default.png', '2023-07-29', '0');
-INSERT INTO `users` VALUES ('7090803498295493000', '小黎', '$2a$10$7K/r7vgC76tjYpx..JWDde9Rpi7Pl55SlZDmN2e57Z3zaplb5nCxO', '2469854373@qq.com', 'asexual', null, null, null, 'avatar_default.png', '2023-07-29', '0');
-INSERT INTO `users` VALUES ('7090803751052640000', '小屁孩', '$2a$10$//k50MJqp7PGR7hgsQRRGefqjeqVED33TiVIoHDwRCffztieiONQy', '3469854373@qq.com', 'asexual', null, null, null, 'avatar_default.png', '2023-07-29', '0');
+INSERT INTO `users` VALUES ('7091176129368686592', '小屁孩', '$2a$10$JotE7wjGyafdJmCcSnz1Juj8ghnf5oH22O1I4OPZPW1KtSIWNe8CC', '3469854373@qq.com', 'asexual', null, null, null, 'avatar_default.png', '2023-07-30', '0');
+INSERT INTO `users` VALUES ('7091176191624740864', '小黎', '$2a$10$wlP1.MrSCfrVt58e/ALE2O5kmheqfA5uudqp9.Q33HlyxGfW9SaGm', '2469854373@qq.com', 'asexual', null, null, null, 'avatar_default.png', '2023-07-30', '0');
+INSERT INTO `users` VALUES ('7091176498379358208', '佳佳', '$2a$10$l74n9jVqDmeuN5ew/EWva.SdoyDXsAxV7BDRcYu8DOt053JXpAiLG', '1813235179@qq.com', 'asexual', null, null, null, 'avatar_default.png', '2023-07-30', '0');
